@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package com.mycompany.hazem;
-import com.mycompany.hazem.utilisateur.Adulte;
-import com.mycompany.hazem.activite.Activite;
-import com.mycompany.hazem.activite.Productivite;
-import com.mycompany.hazem.activite.ReseauxSociaux;
+package smarttimeapp;
+import smarttimeapp.Adulte;
+import smarttimeapp.Activite;
+import smarttimeapp.Productivite;
+import smarttimeapp.ReseauxSociaux;
 import java.util.List;
 import java.util.ArrayList;
-import com.mycompany.hazem.activite.ActiviteFilter;
+import smarttimeapp.ActiviteFilter;
 
 /**
  *
