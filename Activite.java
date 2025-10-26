@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.hazem.activite;
+package smarttimeapp;
 
 /**
  *
@@ -27,4 +27,5 @@ public sealed abstract class Activite permits Divertissement, ReseauxSociaux, Pr
         //String nomApp=(app!=Null)? app.getNom():"Appareil inconnu"
         return "Nom de l'application: "+ app + " - Activite: " +type + " - Duree: "+ duree + "mins";
     }
+
 }
