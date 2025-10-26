@@ -54,14 +54,6 @@ public sealed abstract class Appareil permits Smartphone, Tablette, Ordinateur {
     public int niveauBatterie() { return niveauBatterie; }
     public LocalDateTime derniereUtilisation() { return derniereUtilisation; }
     
-    public boolean estBatterieFaible() {
-        return niveauBatterie <= 15;
-    }
-    
-    public boolean estBatterieCritique() {
-        return niveauBatterie <= 5;
-    }
-    
     public String designationComplete() {
         return String.format("%s %s (%s)", nom, modele, systeme.nom());
     }

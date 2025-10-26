@@ -31,13 +31,6 @@ public final class Smartphone extends Appareil {
     
     public String numeroSerie() { return numeroSerie; }
     
-    public Smartphone withNiveauBatterie(int nouveau) {
-        return new Smartphone(
-            nom(), modele(), systeme(), nouveau, derniereUtilisation(),
-            numeroSerie
-        );
-    }
-    
     @Override
     public Smartphone withDerniereUtilisation(LocalDateTime nouvelle) {
         return new Smartphone(

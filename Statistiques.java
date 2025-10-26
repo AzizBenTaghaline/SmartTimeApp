@@ -6,11 +6,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public final class Statistiques {
-
-    private Statistiques() {
-        throw new UnsupportedOperationException("Classe utilitaire : ne pas instancier");
-    }
-  
     public static Duration dureeTotale(List<Session> sessions) {
         Objects.requireNonNull(sessions, "sessions ne doit pas être null");
         
@@ -69,7 +64,6 @@ public final class Statistiques {
                 entry -> 100.0 * entry.getValue().toMinutes() / totalMinutes
             ));
     }
-     //* Calcule la durée totale par jour.
 
     public static Map<LocalDate, Duration> dureeParJour(List<Session> sessions) {
         Objects.requireNonNull(sessions, "sessions ne doit pas être null");

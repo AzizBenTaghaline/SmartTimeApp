@@ -43,9 +43,10 @@ public final class Historique {
     
      // Retourne une vue non modifiable des sessions.
      
-    public List<Session> sessions() {
+   public List<Session> sessions() {
         return Collections.unmodifiableList(sessions);
     }
+    
     public List<Session> sessionsParJour(LocalDate jour) {
         Objects.requireNonNull(jour, "jour ne doit pas être null");
         

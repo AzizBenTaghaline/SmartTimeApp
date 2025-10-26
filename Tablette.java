@@ -14,10 +14,6 @@ public final class Tablette extends Appareil {
         super(nom, modele, systeme, niveauBatterie, derniereUtilisation);
     }
     
-    public Tablette withNiveauBatterie(int nouveau) {
-        return new Tablette(nom(), modele(), systeme(), nouveau, derniereUtilisation());
-    }
-    
     @Override
     public Tablette withDerniereUtilisation(LocalDateTime nouvelle) {
         return new Tablette(nom(), modele(), systeme(), niveauBatterie(), nouvelle);

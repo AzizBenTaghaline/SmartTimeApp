@@ -10,9 +10,7 @@ public record Objectif(
     Duration limite,
     Predicate<Session> critere
 ) {
-    
     public Objectif {
- 
         Objects.requireNonNull(description, "La description ne doit pas être null");
         Objects.requireNonNull(limite, "La limite ne doit pas être null");
         Objects.requireNonNull(critere, "Le critère ne doit pas être null");
@@ -28,13 +26,16 @@ public record Objectif(
         }
     }
     
+   
     public boolean estDepasse(Historique historique, LocalDate jour) {
         Objects.requireNonNull(historique, "L'historique ne doit pas être null");
         Objects.requireNonNull(jour, "Le jour ne doit pas être null");
-                Duration total = historique.sessionsParJour(jour).stream()
-            .filter(critere)                    // Filtre selon le critère
-            .map(Session::duree)                // Extrait les durées
-            .reduce(Duration.ZERO, Duration::plus);  // Somme
+        
+        Duration total = historique.sessionsParJour(jour).stream()
+            .filter(critere)
+            .map(Session::duree)
+            .reduce(Duration.ZERO, Duration::plus);
+        
         return total.compareTo(limite) > 0;
     }
 
@@ -56,7 +57,7 @@ public record Objectif(
         
         return (100.0 * totalMinutes) / limiteMinutes;
     }
-   
+
     public Duration tempsRestant(Historique historique, LocalDate jour) {
         Objects.requireNonNull(historique, "L'historique ne doit pas être null");
         Objects.requireNonNull(jour, "Le jour ne doit pas être null");
@@ -68,12 +69,22 @@ public record Objectif(
         
         return limite.minus(total);
     }
+   
+    public static Objectif pourAppareil(Appareil appareil, Duration limite) {
+        Objects.requireNonNull(appareil, "L'appareil ne doit pas être null");
+        
+        return new Objectif(
+            "Limiter " + appareil.nom() + " à " + formatterDuree(limite),
+            limite,
+            s -> s.appareil().equals(appareil)
+        );
+    }
     
     public static Objectif pourTous(Duration limite) {
         return new Objectif(
             "Limiter utilisation totale à " + formatterDuree(limite),
             limite,
-            s -> true  // Accepte toutes les sessions
+            s -> true
         );
     }
     
@@ -90,7 +101,13 @@ public record Objectif(
             s -> s.application().equalsIgnoreCase(nomApplication)
         );
     }
-   
+    public static Objectif personnalise(
+        String description,
+        Duration limite,
+        Predicate<Session> critere
+    ) {
+        return new Objectif(description, limite, critere);
+    }
     private static String formatterDuree(Duration duree) {
         long heures = duree.toHours();
         

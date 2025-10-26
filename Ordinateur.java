@@ -44,13 +44,6 @@ public final class Ordinateur extends Appareil {
     public int ramGo() { return ramGo; }
     public TypeOrdinateur type() { return type; }
     
-    public Ordinateur withNiveauBatterie(int nouveau) {
-        return new Ordinateur(
-            nom(), modele(), systeme(), nouveau, derniereUtilisation(),
-            ramGo, type
-        );
-    }
-    
     @Override
     public Ordinateur withDerniereUtilisation(LocalDateTime nouvelle) {
         return new Ordinateur(
