@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package com.mycompany.hazem.activite;
+package smarttimeapp;
 
 /**
  *
@@ -11,3 +11,4 @@ package com.mycompany.hazem.activite;
 public interface ActiviteFilter {
     boolean filtrer(Activite a);
 }
+
