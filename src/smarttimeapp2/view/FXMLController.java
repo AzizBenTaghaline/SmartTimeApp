@@ -2,8 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
+
 package smarttimeapp2.view;
 
+import smarttimeapp2.model.*;
+import java.time.Duration;
+
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
@@ -14,6 +19,8 @@ import javafx.scene.layout.VBox;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import javafx.fxml.FXMLLoader;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -26,6 +33,9 @@ import smarttimeapp2.model.Ordinateur;
 import smarttimeapp2.model.Smartphone;
 import smarttimeapp2.model.Systeme;
 import smarttimeapp2.model.Tablette;
+
+// Add these as class fields near the top with other fields
+
 
 public class FXMLController implements Initializable {
     
@@ -83,6 +93,8 @@ public class FXMLController implements Initializable {
         // Set dashboard as active view
         setActiveButton(btnDashboard);
     }
+    
+    private static Historique sharedHistorique = null;
     
     /**
      * Update the date/time label
@@ -213,12 +225,24 @@ private Map<String, Appareil> getAppareils() {
     return appareils;
 }
     
-    @FXML
+     @FXML
     private void afficherSessions() {
-        setActiveButton(btnSessions);
-        // TODO: Implement sessions view
-        showPlaceholderView("⏱ Mes sessions", "L'historique des sessions sera disponible prochainement.");
+    setActiveButton(btnSessions);
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("SessionsView.fxml"));
+        VBox sessionsView = loader.load();
+        
+        SessionsView controller = loader.getController();
+        controller.setHistorique(getHistorique());
+        controller. loadSessions();
+        
+        contentPane.getChildren().clear();
+        contentPane.getChildren().add(sessionsView);
+    } catch (IOException e) {
+        e.printStackTrace();
+        showPlaceholderView("⏱ Mes sessions", "Erreur lors du chargement de la vue des sessions.");
     }
+}
     
     @FXML
     private void afficherStatistiques() {
@@ -263,4 +287,65 @@ private Map<String, Appareil> getAppareils() {
         contentPane.getChildren().clear();
         contentPane.getChildren().add(placeholderView);
     }
+    /**
+ * Get or create shared Historique instance with demo data
+ */
+private Historique getHistorique() {
+    if (sharedHistorique == null) {
+        sharedHistorique = new Historique();
+        initializeDemoSessions();
+    }
+    return sharedHistorique;
 }
+
+/**
+ * Initialize demo session data
+ */
+private void initializeDemoSessions() {
+    try {
+        // Create demo devices
+        Smartphone iphone = Smartphone.creer("iPhone", "14 Pro", Systeme.IOS);
+        Tablette ipad = Tablette.creer("iPad", "Air", Systeme. IPADOS);
+        Ordinateur macbook = Ordinateur.creer("MacBook", "Pro M2", Systeme.MACOS);
+        
+        LocalDateTime now = LocalDateTime.now();
+        
+        // Today's sessions
+        sharedHistorique.ajouter(Session.creerAvecDuree(
+            now.minusHours(2), Duration.ofMinutes(45), iphone, "Instagram"
+        ));
+        sharedHistorique.ajouter(Session.creerAvecDuree(
+            now.minusHours(4), Duration.ofMinutes(120), macbook, "VSCode"
+        ));
+        sharedHistorique.ajouter(Session.creerAvecDuree(
+            now. minusHours(5), Duration.ofMinutes(30), ipad, "YouTube"
+        ));
+        
+        // Yesterday's sessions
+        LocalDateTime yesterday = now.minusDays(1);
+        sharedHistorique.ajouter(Session.creerAvecDuree(
+            yesterday. minusHours(3), Duration.ofMinutes(90), iphone, "TikTok"
+        ));
+        sharedHistorique.ajouter(Session.creerAvecDuree(
+            yesterday. minusHours(6), Duration.ofMinutes(60), macbook, "Chrome"
+        ));
+        
+        // Last week's sessions
+        LocalDateTime lastWeek = now. minusDays(5);
+        sharedHistorique.ajouter(Session.creerAvecDuree(
+            lastWeek.minusHours(2), Duration.ofMinutes(25), iphone, "WhatsApp"
+        ));
+        sharedHistorique.ajouter(Session.creerAvecDuree(
+            lastWeek.minusHours(4), Duration.ofMinutes(180), macbook, "IntelliJ IDEA"
+        ));
+        sharedHistorique.ajouter(Session.creerAvecDuree(
+            lastWeek.minusHours(7), Duration.ofMinutes(50), ipad, "Netflix"
+        ));
+        
+    } catch (Exception e) {
+        System.err.println("Erreur lors de l'initialisation des sessions démo: " + e.getMessage());
+    }
+}
+}
+
+

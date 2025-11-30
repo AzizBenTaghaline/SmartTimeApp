@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="smarttimeapp2.view.SessionsView"
+      spacing="20" style="-fx-background-color: #f5f5f5;">
+    
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    
+    <!-- Title Section -->
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label text="⏱ Mes sessions" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="🔄 Rafraîchir" onAction="#rafraichir" 
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius: 5; -fx-cursor: hand;"/>
+    </HBox>
+    
+    <!-- Statistics Cards -->
+    <HBox spacing="15" alignment="CENTER">
+        <!-- Card 1: Number of Sessions -->
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
+            <Label text="📊 Nombre de sessions" style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;"/>
+            <Label fx:id="labelNbSessions" text="0" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        </VBox>
+        
+        <!-- Card 2: Total Time -->
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
+            <Label text="⏰ Temps total" style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;"/>
+            <Label fx:id="labelTempsTotal" text="0 min" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #3498db;"/>
+        </VBox>
+        
+        <!-- Card 3: Average Duration -->
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
+            <Label text="📈 Durée moyenne" style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;"/>
+            <Label fx:id="labelMoyenne" text="0 min" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #27ae60;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- Filter Controls -->
+    <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+        <Label text="🔍 Filtres:" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+        
+        <Label text="Période:"/>
+        <ComboBox fx:id="comboPeriode" prefWidth="150" style="-fx-background-color: #ecf0f1; -fx-background-radius: 5;"/>
+        
+        <Region HBox.hgrow="ALWAYS"/>
+        
+        <Label text="Rechercher:"/>
+        <TextField fx:id="txtRecherche" promptText="Application ou appareil..." prefWidth="250" 
+                   style="-fx-background-color: #ecf0f1; -fx-background-radius: 5; -fx-padding: 8;"/>
+    </HBox>
+    
+    <!-- Sessions Table -->
+    <TableView fx:id="tableSessions" VBox.vgrow="ALWAYS" 
+               style="-fx-background-color: white; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+        <columns>
+            <TableColumn fx:id="colDate" text="📅 Date" prefWidth="100" style="-fx-alignment: CENTER;"/>
+            <TableColumn fx:id="colDebut" text="🕐 Début" prefWidth="80" style="-fx-alignment: CENTER;"/>
+            <TableColumn fx:id="colFin" text="🕐 Fin" prefWidth="80" style="-fx-alignment: CENTER;"/>
+            <TableColumn fx:id="colApplication" text="📱 Application" prefWidth="150"/>
+            <TableColumn fx:id="colAppareil" text="💻 Appareil" prefWidth="200"/>
+            <TableColumn fx:id="colDuree" text="⏱ Durée" prefWidth="100" style="-fx-alignment: CENTER;"/>
+        </columns>
+        
+        <placeholder>
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="📭" style="-fx-font-size: 48;"/>
+                <Label text="Aucune session trouvée" style="-fx-font-size: 16; -fx-text-fill: #7f8c8d;"/>
+                <Label text="Essayez de modifier vos filtres" style="-fx-font-size: 12; -fx-text-fill: #95a5a6;"/>
+            </VBox>
+        </placeholder>
+    </TableView>
+    
+</VBox>
