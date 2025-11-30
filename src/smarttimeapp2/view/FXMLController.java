@@ -254,9 +254,23 @@ private Map<String, Appareil> getAppareils() {
     @FXML
     private void afficherObjectifs() {
         setActiveButton(btnObjectifs);
-        // TODO: Implement objectifs view
-        showPlaceholderView("🎯 Objectifs", "La gestion des objectifs sera disponible prochainement.");
+    try {
+        System.out.println("Loading ObjectifsView. fxml...");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ObjectifsView.fxml"));
+        VBox objectifsView = loader.load();
+        
+        ObjectifsView controller = loader.getController();
+        controller.setHistorique(getHistorique());
+        controller. loadObjectifs();
+        
+        contentPane.getChildren().clear();
+        contentPane.getChildren().add(objectifsView);
+    } catch (IOException e) {
+        System.err.println("ERROR loading objectifs view:");
+        e.printStackTrace();
+        showPlaceholderView("🎯 Objectifs", "Erreur lors du chargement de la vue des objectifs.");
     }
+}
     
     @FXML
     private void ajouterSession() {
