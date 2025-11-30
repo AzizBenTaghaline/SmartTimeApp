@@ -18,7 +18,14 @@ import javafx.collections.ObservableList;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import smarttimeapp2.model.Appareil;
+import smarttimeapp2.model.Ordinateur;
+import smarttimeapp2.model.Smartphone;
+import smarttimeapp2.model.Systeme;
+import smarttimeapp2.model.Tablette;
 
 public class FXMLController implements Initializable {
     
@@ -180,12 +187,31 @@ public class FXMLController implements Initializable {
         contentPane.getChildren().add(dashboardView);
     }
     
-    @FXML
-    private void afficherAppareils() {
-        setActiveButton(btnAppareils);
-        // TODO: Implement appareils view
-        showPlaceholderView("📱 Mes appareils", "La gestion des appareils sera disponible prochainement.");
-    }
+@FXML
+private void afficherAppareils() {
+    setActiveButton(btnAppareils);
+    
+    // Get appareils from your data source
+    Map<String, Appareil> appareils = getAppareils(); // You'll need to implement this
+    
+    AppareilsView appareilsView = new AppareilsView(appareils);
+    contentPane.getChildren().clear();
+    contentPane.getChildren().add(appareilsView);
+}
+
+// You'll need to add a method to access your appareils data
+private Map<String, Appareil> getAppareils() {
+    // This should retrieve appareils from your SmartTimeApp data
+    // You might need to refactor SmartTimeApp to make appareils accessible
+    Map<String, Appareil> appareils = new HashMap<>();
+    
+    // Sample data (replace with actual data loading)
+    appareils.put("iphone", Smartphone.creer("iPhone", "14 Pro", Systeme.IOS));
+    appareils. put("laptop", Ordinateur.creer("MacBook", "Pro M2", Systeme.IOS));
+    appareils. put("tablet", Tablette. creer("iPad", "Air", Systeme.IOS));
+    
+    return appareils;
+}
     
     @FXML
     private void afficherSessions() {
