@@ -1,13 +1,12 @@
+package smarttimeapp2.controllers;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
 
-package smarttimeapp2.view;
 
-import smarttimeapp2.controllers.SessionsView;
-import smarttimeapp2.controllers.ObjectifsView;
-import smarttimeapp2.controllers.AppareilsView;
+
 import smarttimeapp2.model.*;
 import java.time.Duration;
 
@@ -31,6 +30,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import smarttimeapp2.controllers.AppareilsView;
+import smarttimeapp2.controllers.ObjectifsView;
+import smarttimeapp2.controllers.SessionsView;
 import smarttimeapp2.model.Appareil;
 import smarttimeapp2.model.Ordinateur;
 import smarttimeapp2.model.Smartphone;
@@ -207,7 +209,7 @@ public class FXMLController implements Initializable {
         setActiveButton(btnAppareils);
     try {
         System.out.println("Loading AppareilsView. fxml...");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("AppareilsView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/smarttimeapp2/view/AppareilsView.fxml"));
         VBox appareilsView = loader.load();
         
         AppareilsView controller = loader. getController();
@@ -228,7 +230,7 @@ public class FXMLController implements Initializable {
     private void afficherSessions() {
     setActiveButton(btnSessions);
     try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("SessionsView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/smarttimeapp2/view/SessionsView.fxml"));
         VBox sessionsView = loader.load();
         
         SessionsView controller = loader.getController();
@@ -255,7 +257,7 @@ public class FXMLController implements Initializable {
         setActiveButton(btnObjectifs);
     try {
         System.out.println("Loading ObjectifsView. fxml...");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ObjectifsView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/smarttimeapp2/view/ObjectifsView.fxml"));
         VBox objectifsView = loader.load();
         
         ObjectifsView controller = loader.getController();

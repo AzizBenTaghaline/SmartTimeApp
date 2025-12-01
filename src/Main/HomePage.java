@@ -1,4 +1,4 @@
-package smarttimeapp2.view;
+package Main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +8,6 @@ import javafx.stage.Stage;
 public class HomePage extends Application {
 
     private static Stage primaryStage;
-
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
@@ -17,7 +16,7 @@ public class HomePage extends Application {
 
     public static void showFXML() throws Exception {
         FXMLLoader loader = new FXMLLoader(
-                HomePage.class.getResource("FXML.fxml")
+                HomePage.class.getResource("/smarttimeapp2/view/FXML.fxml")
         );
         Scene scene = new Scene(loader.load());
         primaryStage.setScene(scene);
