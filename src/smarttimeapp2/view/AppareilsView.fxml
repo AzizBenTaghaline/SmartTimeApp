@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="smarttimeapp2.view.AppareilsView"
+      fx:controller="smarttimeapp2.controllers.AppareilsView"
       spacing="20" style="-fx-padding: 20; -fx-background-color: white;">
     
     <!-- Title -->

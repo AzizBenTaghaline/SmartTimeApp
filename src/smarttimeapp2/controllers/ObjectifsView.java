@@ -1,4 +1,4 @@
-package smarttimeapp2.view;
+package smarttimeapp2.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;

@@ -5,6 +5,9 @@
 
 package smarttimeapp2.view;
 
+import smarttimeapp2.controllers.SessionsView;
+import smarttimeapp2.controllers.ObjectifsView;
+import smarttimeapp2.controllers.AppareilsView;
 import smarttimeapp2.model.*;
 import java.time.Duration;
 

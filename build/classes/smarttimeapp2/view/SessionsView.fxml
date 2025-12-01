@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 
 <VBox xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="smarttimeapp2.view.SessionsView"
+      fx:controller="smarttimeapp2.controllers.SessionsView"
       spacing="20" style="-fx-background-color: #f5f5f5;">
     
     <padding>
