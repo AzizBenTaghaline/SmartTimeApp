@@ -200,30 +200,26 @@ public class FXMLController implements Initializable {
     }
     
 @FXML
-private void afficherAppareils() {
-    setActiveButton(btnAppareils);
-    
-    // Get appareils from your data source
-    Map<String, Appareil> appareils = getAppareils(); // You'll need to implement this
-    
-    AppareilsView appareilsView = new AppareilsView(appareils);
-    contentPane.getChildren().clear();
-    contentPane.getChildren().add(appareilsView);
+    private void afficherAppareils() {
+        setActiveButton(btnAppareils);
+    try {
+        System.out.println("Loading AppareilsView. fxml...");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AppareilsView.fxml"));
+        VBox appareilsView = loader.load();
+        
+        AppareilsView controller = loader. getController();
+        controller.setAppareils(getAppareils());
+        controller.loadAppareils();
+        
+        contentPane.getChildren().clear();
+        contentPane.getChildren().add(appareilsView);
+    } catch (IOException e) {
+        System.err.println("ERROR loading appareils view:");
+        e.printStackTrace();
+        showPlaceholderView("📱 Mes appareils", "Erreur lors du chargement de la vue des appareils.");
+    }
 }
 
-// You'll need to add a method to access your appareils data
-private Map<String, Appareil> getAppareils() {
-    // This should retrieve appareils from your SmartTimeApp data
-    // You might need to refactor SmartTimeApp to make appareils accessible
-    Map<String, Appareil> appareils = new HashMap<>();
-    
-    // Sample data (replace with actual data loading)
-    appareils.put("iphone", Smartphone.creer("iPhone", "14 Pro", Systeme.IOS));
-    appareils. put("laptop", Ordinateur.creer("MacBook", "Pro M2", Systeme.IOS));
-    appareils. put("tablet", Tablette. creer("iPad", "Air", Systeme.IOS));
-    
-    return appareils;
-}
     
      @FXML
     private void afficherSessions() {
@@ -248,7 +244,7 @@ private Map<String, Appareil> getAppareils() {
     private void afficherStatistiques() {
         setActiveButton(btnStatistiques);
         // TODO: Implement statistiques view
-        showPlaceholderView("📈 Statistiques", "Les statistiques détaillées seront disponibles prochainement.");
+        showPlaceholderView("📈 Statistiques","Erreur");
     }
     
     @FXML
@@ -359,6 +355,16 @@ private void initializeDemoSessions() {
     } catch (Exception e) {
         System.err.println("Erreur lors de l'initialisation des sessions démo: " + e.getMessage());
     }
+}
+private Map<String, Appareil> getAppareils() {
+    Map<String, Appareil> appareils = new HashMap<>();
+    
+    // Données de démonstration
+    appareils. put("iPhone", Smartphone.creer("iPhone", "14 Pro", Systeme.IOS));
+    appareils. put("MacBook", Ordinateur.creer("MacBook", "Pro M2", Systeme.MACOS));
+    appareils.put("iPad", Tablette.creer("iPad", "Air", Systeme. IPADOS));
+    
+    return appareils;
 }
 }
 

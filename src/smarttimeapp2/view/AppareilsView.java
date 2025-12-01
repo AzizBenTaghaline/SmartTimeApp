@@ -1,57 +1,85 @@
-package smarttimeapp2.view;
+package smarttimeapp2. view;
 
-import javafx.geometry.Insets;
+import javafx.application.Platform;
+import javafx. fxml.FXML;
+import javafx.fxml. Initializable;
+import javafx. geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control. Label;
-import javafx.scene. layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import smarttimeapp2.model.*;
+import javafx.scene.control.Label;
+import javafx.scene. layout.*;
+import smarttimeapp2. model.*;
+
+import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.ResourceBundle;
 
-public class AppareilsView extends VBox {
+/**
+ * Controller for the Appareils (Devices) View
+ */
+public class AppareilsView implements Initializable {
+
+    @FXML
+    private Label labelTotalAppareils;
+    
+    @FXML
+    private GridPane gridAppareils;
+    
+    private Map<String, Appareil> appareils;
     
     private static final DateTimeFormatter FORMAT_DATETIME = 
-        DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-    
-    public AppareilsView(Map<String, Appareil> appareils) {
-        super(20);
-        setStyle("-fx-padding: 20; -fx-background-color: white;");
-        
-        // Title
-        Label titleLabel = new Label("📱 Mes Appareils");
-        titleLabel.setStyle("-fx-font-size: 24; -fx-font-weight: bold;");
-        
-        // Device count
-        Label countLabel = new Label("Total : " + appareils.size() + " appareil(s)");
-        countLabel.setStyle("-fx-font-size: 14; -fx-text-fill: #666;");
-        
-        getChildren().addAll(titleLabel, countLabel);
-        
-        // Create grid for device cards
-        GridPane grid = new GridPane();
-        grid.setHgap(15);
-        grid.setVgap(15);
-        grid. setPadding(new Insets(20, 0, 0, 0));
-        
-        int col = 0;
-        int row = 0;
-        
-        for (Appareil appareil : appareils.values()) {
-            VBox card = createAppareilCard(appareil);
-            grid.add(card, col, row);
-            
-            col++;
-            if (col > 2) { // 3 columns
-                col = 0;
-                row++;
-            }
-        }
-        
-        getChildren().add(grid);
+        DateTimeFormatter. ofPattern("dd/MM/yyyy HH:mm");
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // Initialize grid properties
+        gridAppareils.setHgap(15);
+        gridAppareils.setVgap(15);
+        gridAppareils.setPadding(new Insets(20, 0, 0, 0));
     }
     
+    /**
+     * Set the appareils data source
+     */
+    public void setAppareils(Map<String, Appareil> appareils) {
+        this.appareils = appareils;
+    }
+    
+    /**
+     * Load and display appareils
+     */
+    public void loadAppareils() {
+        if (appareils == null) {
+            return;
+        }
+        
+        Platform.runLater(() -> {
+            // Update total count
+            labelTotalAppareils.setText("Total : " + appareils. size() + " appareil(s)");
+            
+            // Clear existing cards
+            gridAppareils.getChildren().clear();
+            
+            // Add device cards to grid
+            int col = 0;
+            int row = 0;
+            
+            for (Appareil appareil : appareils.values()) {
+                VBox card = createAppareilCard(appareil);
+                gridAppareils.add(card, col, row);
+                
+                col++;
+                if (col > 2) { // 3 columns
+                    col = 0;
+                    row++;
+                }
+            }
+        });
+    }
+    
+    /**
+     * Create a device card
+     */
     private VBox createAppareilCard(Appareil appareil) {
         VBox card = new VBox(10);
         card.setStyle(
@@ -68,7 +96,7 @@ public class AppareilsView extends VBox {
         iconLabel.setStyle("-fx-font-size: 48;");
         
         // Device name and model
-        Label nameLabel = new Label(appareil.designationComplete());
+        Label nameLabel = new Label(appareil. designationComplete());
         nameLabel. setStyle("-fx-font-size: 16; -fx-font-weight: bold;");
         nameLabel.setWrapText(true);
         
@@ -88,18 +116,21 @@ public class AppareilsView extends VBox {
         if (appareil instanceof Smartphone s) {
             Label serialLabel = new Label("N° série: " + s.numeroSerie());
             serialLabel.setStyle("-fx-font-size: 11; -fx-text-fill: #888;");
-            card.getChildren().add(serialLabel);
+            card. getChildren().add(serialLabel);
         } else if (appareil instanceof Ordinateur o) {
             Label ramLabel = new Label("RAM: " + o.ramGo() + " Go");
             Label typeLabel = new Label("Type: " + o.type().nom());
             ramLabel.setStyle("-fx-font-size: 11; -fx-text-fill: #888;");
             typeLabel.setStyle("-fx-font-size: 11; -fx-text-fill: #888;");
-            card.getChildren().addAll(ramLabel, typeLabel);
+            card.getChildren(). addAll(ramLabel, typeLabel);
         }
         
         return card;
     }
     
+    /**
+     * Get device icon based on type
+     */
     private String getDeviceIcon(Appareil appareil) {
         if (appareil instanceof Smartphone) return "📱";
         if (appareil instanceof Tablette) return "📲";
@@ -107,9 +138,12 @@ public class AppareilsView extends VBox {
         return "📱";
     }
     
+    /**
+     * Create battery indicator
+     */
     private HBox createBatteryIndicator(int batteryLevel) {
         HBox box = new HBox(5);
-        box.setAlignment(Pos.CENTER_LEFT);
+        box. setAlignment(Pos.CENTER_LEFT);
         
         String batteryIcon = batteryLevel > 75 ? "🔋" :
                            batteryLevel > 25 ? "🔋" : "🪫";
@@ -120,7 +154,15 @@ public class AppareilsView extends VBox {
         Label levelLabel = new Label(batteryLevel + "%");
         levelLabel.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
         
-        box.getChildren().addAll(icon, levelLabel);
+        box. getChildren().addAll(icon, levelLabel);
         return box;
+    }
+    
+    /**
+     * Refresh button action
+     */
+    @FXML
+    private void rafraichir() {
+        loadAppareils();
     }
 }
