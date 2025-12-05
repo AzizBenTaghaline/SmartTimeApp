@@ -18,10 +18,6 @@ import java. time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
 
-/**
- * Controller for the Sessions View
- * Displays session history with filtering and statistics
- */
 public class SessionsView implements Initializable {
 
     @FXML
@@ -69,10 +65,8 @@ public class SessionsView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Initialize table columns
         setupTableColumns();
         
-        // Initialize filter combo box
         comboPeriode.setItems(FXCollections.observableArrayList(
             "Aujourd'hui",
             "Cette semaine",
@@ -81,14 +75,10 @@ public class SessionsView implements Initializable {
         ));
         comboPeriode.setValue("Toutes");
         
-        // Add listeners for filtering
         comboPeriode.setOnAction(e -> applyFilters());
         txtRecherche.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
     }
     
-    /**
-     * Setup table columns with cell value factories
-     */
     private void setupTableColumns() {
         colDate.setCellValueFactory(cellData -> 
             new SimpleStringProperty(cellData.getValue().debut().format(DATE_FORMATTER))
@@ -114,7 +104,6 @@ public class SessionsView implements Initializable {
             new SimpleStringProperty(formatDuration(cellData.getValue().dureeMinutes()))
         );
         
-        // Add custom cell factory for duration with color coding
         colDuree.setCellFactory(column -> new TableCell<Session, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -126,25 +115,21 @@ public class SessionsView implements Initializable {
                 } else {
                     setText(item);
                     
-                    // Color code based on duration
                     Session session = getTableView().getItems().get(getIndex());
                     long minutes = session.dureeMinutes();
                     
                     if (minutes < 30) {
-                        setStyle("-fx-text-fill: #27ae60; -fx-font-weight: bold;"); // Green
+                        setStyle("-fx-text-fill: #27ae60; -fx-font-weight: bold;");
                     } else if (minutes < 120) {
-                        setStyle("-fx-text-fill: #f39c12; -fx-font-weight: bold;"); // Orange
+                        setStyle("-fx-text-fill: #f39c12; -fx-font-weight: bold;"); 
                     } else {
-                        setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;"); // Red
+                        setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;"); 
                     }
                 }
             }
         });
     }
     
-    /**
-     * Format duration in a human-readable format
-     */
     private String formatDuration(long totalMinutes) {
         if (totalMinutes < 60) {
             return totalMinutes + " min";
@@ -158,16 +143,11 @@ public class SessionsView implements Initializable {
         }
     }
     
-    /**
-     * Set the historique data source
-     */
+ 
     public void setHistorique(Historique historique) {
         this.historique = historique;
     }
     
-    /**
-     * Load sessions from historique
-     */
     public void loadSessions() {
         if (historique == null) {
             return;
@@ -183,17 +163,13 @@ public class SessionsView implements Initializable {
         
         updateStatistics(sessionsList);
     }
-    
-    /**
-     * Apply filters based on period and search text
-     */
+
     private void applyFilters() {
         if (filteredSessions == null) {
             return;
         }
         
         filteredSessions.setPredicate(session -> {
-            // Period filter
             String periode = comboPeriode.getValue();
             boolean periodMatch = switch (periode) {
                 case "Aujourd'hui" -> session.appartientAuJour(LocalDate.now());
@@ -205,14 +181,13 @@ public class SessionsView implements Initializable {
                     LocalDate monthAgo = LocalDate.now().minusMonths(1);
                     yield ! session.jour().isBefore(monthAgo);
                 }
-                default -> true; // "Toutes"
+                default -> true; 
             };
             
             if (!periodMatch) {
                 return false;
             }
             
-            // Search filter
             String searchText = txtRecherche.getText();
             if (searchText == null || searchText.isEmpty()) {
                 return true;
@@ -226,10 +201,7 @@ public class SessionsView implements Initializable {
         
         updateStatistics(filteredSessions);
     }
-    
-    /**
-     * Update statistics labels
-     */
+
     private void updateStatistics(List<Session> sessions) {
         Platform.runLater(() -> {
             int nbSessions = sessions.size();
@@ -249,9 +221,6 @@ public class SessionsView implements Initializable {
         });
     }
     
-    /**
-     * Refresh button action
-     */
     @FXML
     private void rafraichir() {
         loadSessions();

@@ -8,15 +8,11 @@
       fx:controller="smarttimeapp2.controllers.AppareilsView"
       spacing="20" style="-fx-padding: 20; -fx-background-color: white;">
     
-    <!-- Title -->
     <Label text="📱 Mes Appareils" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
     
-    <!-- Device Count -->
     <Label fx:id="labelTotalAppareils" text="Total : 0 appareil(s)" style="-fx-font-size: 14; -fx-text-fill: #666;"/>
     
-    <!-- Grid for device cards -->
     <GridPane fx:id="gridAppareils">
-        <!-- Cards will be added programmatically -->
     </GridPane>
     
 </VBox>

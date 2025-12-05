@@ -341,9 +341,7 @@ public class ObjectifsView implements Initializable {
         });
     }
     
-    /**
-     * Refresh button action
-     */
+   
     @FXML
     private void rafraichir() {
         jourActuel = LocalDate.now();

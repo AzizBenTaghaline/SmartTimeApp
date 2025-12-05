@@ -12,7 +12,6 @@
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
     
-    <!-- Title Section -->
     <HBox alignment="CENTER_LEFT" spacing="15">
         <Label text="🎯 Mes objectifs" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
         <Region HBox.hgrow="ALWAYS"/>
@@ -20,34 +19,28 @@
                 style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius: 5; -fx-cursor: hand;"/>
     </HBox>
     
-    <!-- Statistics Summary -->
     <HBox spacing="15" alignment="CENTER">
-        <!-- Card 1: Active Objectives -->
         <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
             <Label text="📋 Objectifs actifs" style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;"/>
             <Label fx:id="labelObjectifsActifs" text="0" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
         </VBox>
         
-        <!-- Card 2: Respected Objectives -->
         <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
             <Label text="✅ Respectés" style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;"/>
             <Label fx:id="labelObjectifsRespetes" text="0" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #27ae60;"/>
         </VBox>
         
-        <!-- Card 3: Exceeded Objectives -->
         <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
             <Label text="🚫 Dépassés" style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;"/>
             <Label fx:id="labelObjectifsDepasses" text="0" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #e74c3c;"/>
         </VBox>
     </HBox>
     
-    <!-- Section Header -->
     <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10 0;">
         <Label text="📊 Stratégies de gestion du temps" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #34495e;"/>
         <Separator HBox.hgrow="ALWAYS"/>
     </HBox>
     
-    <!-- Objectives Cards Container -->
     <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
         <content>
             <FlowPane fx:id="cardsContainer" hgap="20" vgap="20" style="-fx-padding: 10;">

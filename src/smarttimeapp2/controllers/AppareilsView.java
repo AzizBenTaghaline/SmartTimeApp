@@ -14,9 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-/**
- * Controller for the Appareils (Devices) View
- */
+
 public class AppareilsView implements Initializable {
 
     @FXML
@@ -32,35 +30,25 @@ public class AppareilsView implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Initialize grid properties
         gridAppareils.setHgap(15);
         gridAppareils.setVgap(15);
         gridAppareils.setPadding(new Insets(20, 0, 0, 0));
     }
-    
-    /**
-     * Set the appareils data source
-     */
+
     public void setAppareils(Map<String, Appareil> appareils) {
         this.appareils = appareils;
     }
-    
-    /**
-     * Load and display appareils
-     */
+
     public void loadAppareils() {
         if (appareils == null) {
             return;
         }
         
         Platform.runLater(() -> {
-            // Update total count
             labelTotalAppareils.setText("Total : " + appareils. size() + " appareil(s)");
             
-            // Clear existing cards
             gridAppareils.getChildren().clear();
             
-            // Add device cards to grid
             int col = 0;
             int row = 0;
             
@@ -69,7 +57,7 @@ public class AppareilsView implements Initializable {
                 gridAppareils.add(card, col, row);
                 
                 col++;
-                if (col > 2) { // 3 columns
+                if (col > 2) { 
                     col = 0;
                     row++;
                 }
@@ -77,9 +65,6 @@ public class AppareilsView implements Initializable {
         });
     }
     
-    /**
-     * Create a device card
-     */
     private VBox createAppareilCard(Appareil appareil) {
         VBox card = new VBox(10);
         card.setStyle(
@@ -90,20 +75,16 @@ public class AppareilsView implements Initializable {
         );
         card.setPrefWidth(280);
         
-        // Device icon based on type
         String icon = getDeviceIcon(appareil);
         Label iconLabel = new Label(icon);
         iconLabel.setStyle("-fx-font-size: 48;");
         
-        // Device name and model
         Label nameLabel = new Label(appareil. designationComplete());
         nameLabel. setStyle("-fx-font-size: 16; -fx-font-weight: bold;");
         nameLabel.setWrapText(true);
         
-        // Battery level with visual indicator
         HBox batteryBox = createBatteryIndicator(appareil. niveauBatterie());
         
-        // Last usage
         Label lastUsageLabel = new Label(
             "Dernière utilisation:\n" + 
             appareil.derniereUtilisation(). format(FORMAT_DATETIME)
@@ -112,7 +93,6 @@ public class AppareilsView implements Initializable {
         
         card.getChildren().addAll(iconLabel, nameLabel, batteryBox, lastUsageLabel);
         
-        // Add specific details based on device type
         if (appareil instanceof Smartphone s) {
             Label serialLabel = new Label("N° série: " + s.numeroSerie());
             serialLabel.setStyle("-fx-font-size: 11; -fx-text-fill: #888;");
@@ -128,9 +108,6 @@ public class AppareilsView implements Initializable {
         return card;
     }
     
-    /**
-     * Get device icon based on type
-     */
     private String getDeviceIcon(Appareil appareil) {
         if (appareil instanceof Smartphone) return "📱";
         if (appareil instanceof Tablette) return "📲";
@@ -138,9 +115,6 @@ public class AppareilsView implements Initializable {
         return "📱";
     }
     
-    /**
-     * Create battery indicator
-     */
     private HBox createBatteryIndicator(int batteryLevel) {
         HBox box = new HBox(5);
         box. setAlignment(Pos.CENTER_LEFT);
@@ -158,9 +132,7 @@ public class AppareilsView implements Initializable {
         return box;
     }
     
-    /**
-     * Refresh button action
-     */
+
     @FXML
     private void rafraichir() {
         loadAppareils();
