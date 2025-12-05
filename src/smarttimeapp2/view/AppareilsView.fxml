@@ -10,9 +10,22 @@
     
     <Label text="📱 Mes Appareils" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
     
-    <Label fx:id="labelTotalAppareils" text="Total : 0 appareil(s)" style="-fx-font-size: 14; -fx-text-fill: #666;"/>
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label fx:id="labelTotalAppareils" text="Total : 0 appareil(s)" 
+               style="-fx-font-size: 14; -fx-text-fill: #666;"/>
+        
+        <!-- Boutons d'action -->
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="btnAjouter" text="➕ Ajouter" onAction="#handleAjouter" 
+                style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 10 20; -fx-cursor: hand;"/>
+        <Button fx:id="btnModifier" text="✏️ Modifier" onAction="#handleModifier" 
+                style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 10 20; -fx-cursor: hand;"/>
+        <Button fx:id="btnSupprimer" text="🗑️ Supprimer" onAction="#handleSupprimer" 
+                style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-font-size: 14; -fx-padding: 10 20; -fx-cursor: hand;"/>
+    </HBox>
     
-    <GridPane fx:id="gridAppareils">
-    </GridPane>
+    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+        <GridPane fx:id="gridAppareils"/>
+    </ScrollPane>
     
 </VBox>

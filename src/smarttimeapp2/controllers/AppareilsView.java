@@ -5,15 +5,15 @@ import javafx. fxml.FXML;
 import javafx.fxml. Initializable;
 import javafx. geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene. layout.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import smarttimeapp2. model.*;
-
 import java.net.URL;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import java. time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
-
 
 public class AppareilsView implements Initializable {
 
@@ -23,10 +23,20 @@ public class AppareilsView implements Initializable {
     @FXML
     private GridPane gridAppareils;
     
+    @FXML
+    private Button btnAjouter;
+    
+    @FXML
+    private Button btnSupprimer;
+    
+    @FXML
+    private Button btnModifier;
+    
     private Map<String, Appareil> appareils;
+    private Appareil appareilSelectionne;
     
     private static final DateTimeFormatter FORMAT_DATETIME = 
-        DateTimeFormatter. ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -35,6 +45,172 @@ public class AppareilsView implements Initializable {
         gridAppareils.setPadding(new Insets(20, 0, 0, 0));
     }
 
+    // MÉTHODE AJOUTER
+    @FXML
+private void handleAjouter() {
+    Dialog<Appareil> dialog = new Dialog<>();
+    dialog.setTitle("Ajouter un appareil");
+    dialog.setHeaderText("Entrez les informations du nouvel appareil");
+
+    ButtonType btnValider = new ButtonType("Ajouter", ButtonBar.ButtonData.OK_DONE);
+    dialog.getDialogPane().getButtonTypes().addAll(btnValider, ButtonType. CANCEL);
+
+    // Créer le formulaire
+    GridPane grid = new GridPane();
+    grid.setHgap(10);
+    grid.setVgap(10);
+    grid. setPadding(new Insets(20, 150, 10, 10));
+
+    TextField txtNom = new TextField();
+    txtNom.setPromptText("Nom");
+    TextField txtModele = new TextField();
+    txtModele.setPromptText("Modèle");
+    
+    ComboBox<String> cbType = new ComboBox<>();
+    cbType.getItems(). addAll("Smartphone", "Tablette", "Ordinateur");
+    cbType.setValue("Smartphone");
+    
+    ComboBox<Systeme> cbSysteme = new ComboBox<>();
+    cbSysteme.getItems(). addAll(Systeme.values());
+    cbSysteme.setValue(Systeme.ANDROID);
+    
+    Spinner<Integer> spinBatterie = new Spinner<>(0, 100, 100);
+
+    grid.add(new Label("Type:"), 0, 0);
+    grid.add(cbType, 1, 0);
+    grid. add(new Label("Nom:"), 0, 1);
+    grid.add(txtNom, 1, 1);
+    grid.add(new Label("Modèle:"), 0, 2);
+    grid. add(txtModele, 1, 2);
+    grid. add(new Label("Système:"), 0, 3);
+    grid.add(cbSysteme, 1, 3);
+    grid.add(new Label("Batterie (%):"), 0, 4);
+    grid.add(spinBatterie, 1, 4);
+
+    dialog.getDialogPane().setContent(grid);
+
+    // Convertir le résultat - CORRECTION ICI
+    dialog.setResultConverter(dialogButton -> {
+        if (dialogButton == btnValider) {
+            String nom = txtNom.getText();
+            String modele = txtModele.getText();
+            Systeme systeme = cbSysteme.getValue();
+            int batterie = spinBatterie.getValue();
+            LocalDateTime maintenant = LocalDateTime.now();
+
+            String typeChoisi = cbType.getValue();
+            if ("Smartphone".equals(typeChoisi)) {
+                return new Smartphone(nom, modele, systeme, batterie, maintenant, "SN-" + System.currentTimeMillis());
+            } else if ("Tablette".equals(typeChoisi)) {
+                return new Tablette(nom, modele, systeme, batterie, maintenant);
+            } else if ("Ordinateur". equals(typeChoisi)) {
+                return new Ordinateur(nom, modele, systeme, batterie, maintenant);
+            }
+        }
+        return null;
+    });
+
+    Optional<Appareil> result = dialog.showAndWait();
+    result.ifPresent(appareil -> {
+        appareils.put(appareil. nom(), appareil);
+        loadAppareils();
+        showAlert(Alert.AlertType.INFORMATION, "Succès", "Appareil ajouté avec succès!");
+    });
+}
+
+    // MÉTHODE MODIFIER
+    @FXML
+private void handleModifier() {
+    ChoiceDialog<String> choixDialog = new ChoiceDialog<>(null, appareils.keySet());
+    choixDialog. setTitle("Modifier un appareil");
+    choixDialog.setHeaderText("Sélectionnez l'appareil à modifier");
+    choixDialog.setContentText("Appareil:");
+
+    Optional<String> choix = choixDialog.showAndWait();
+    choix.ifPresent(nom -> {
+        Appareil appareil = appareils. get(nom);
+        
+        Dialog<Integer> dialog = new Dialog<>();
+        dialog.setTitle("Modifier la batterie");
+        dialog.setHeaderText("Modifier le niveau de batterie de: " + appareil.nom());
+
+        ButtonType btnValider = new ButtonType("Modifier", ButtonBar. ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(btnValider, ButtonType. CANCEL);
+
+        Spinner<Integer> spinBatterie = new Spinner<>(0, 100, appareil.niveauBatterie());
+        VBox content = new VBox(10);
+        content.getChildren().addAll(new Label("Nouveau niveau de batterie (%):"), spinBatterie);
+        content.setPadding(new Insets(20));
+        
+        dialog.getDialogPane().setContent(content);
+        dialog.setResultConverter(btn -> btn == btnValider ? spinBatterie.getValue() : null);
+
+        Optional<Integer> result = dialog.showAndWait();
+        result.ifPresent(nouveauNiveau -> {
+            // Créer une nouvelle instance avec le niveau de batterie modifié - CORRECTION ICI
+            Appareil nouveauAppareil = null;
+            
+            if (appareil instanceof Smartphone) {
+                Smartphone s = (Smartphone) appareil;
+                nouveauAppareil = new Smartphone(s. nom(), s.modele(), s. systeme(), 
+                    nouveauNiveau, s.derniereUtilisation(), s.numeroSerie());
+            } else if (appareil instanceof Tablette) {
+                Tablette t = (Tablette) appareil;
+                nouveauAppareil = new Tablette(t.nom(), t.modele(), t.systeme(), 
+                    nouveauNiveau, t.derniereUtilisation());
+            } else if (appareil instanceof Ordinateur) {
+                Ordinateur o = (Ordinateur) appareil;
+                nouveauAppareil = new Ordinateur(o.nom(), o.modele(), o.systeme(), 
+                    nouveauNiveau, o.derniereUtilisation(), o.ramGo(), o.type());
+            }
+            
+            if (nouveauAppareil != null) {
+                appareils. put(nom, nouveauAppareil);
+                loadAppareils();
+                showAlert(Alert. AlertType.INFORMATION, "Succès", "Appareil modifié avec succès!");
+            }
+        });
+    });
+}
+    // Méthode utilitaire pour afficher des alertes
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert. showAndWait();
+    }
+    
+@FXML
+private void handleSupprimer() {
+    // Vérifier s'il y a des appareils à supprimer
+    if (appareils == null || appareils.isEmpty()) {
+        showAlert(Alert. AlertType.WARNING, "Aucun appareil", "Il n'y a aucun appareil à supprimer.");
+        return;
+    }
+    
+    // Liste de choix
+    ChoiceDialog<String> dialog = new ChoiceDialog<>(null, appareils.keySet());
+    dialog.setTitle("Supprimer un appareil");
+    dialog.setHeaderText("Sélectionnez l'appareil à supprimer");
+    dialog.setContentText("Appareil:");
+
+    Optional<String> result = dialog.showAndWait();
+    result.ifPresent(nom -> {
+        // Dialogue de confirmation
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation. setTitle("Confirmation");
+        confirmation.setHeaderText("Êtes-vous sûr de vouloir supprimer cet appareil? ");
+        confirmation.setContentText("Appareil: " + nom);
+
+        Optional<ButtonType> confirmResult = confirmation.showAndWait();
+        if (confirmResult.isPresent() && confirmResult.get() == ButtonType.OK) {
+            appareils.remove(nom);
+            loadAppareils();
+            showAlert(Alert.AlertType. INFORMATION, "Succès", "Appareil supprimé avec succès!");
+        }
+    });
+}
     public void setAppareils(Map<String, Appareil> appareils) {
         this.appareils = appareils;
     }
@@ -45,7 +221,7 @@ public class AppareilsView implements Initializable {
         }
         
         Platform.runLater(() -> {
-            labelTotalAppareils.setText("Total : " + appareils. size() + " appareil(s)");
+            labelTotalAppareils. setText("Total : " + appareils.size() + " appareil(s)");
             
             gridAppareils.getChildren().clear();
             
@@ -80,7 +256,7 @@ public class AppareilsView implements Initializable {
         iconLabel.setStyle("-fx-font-size: 48;");
         
         Label nameLabel = new Label(appareil. designationComplete());
-        nameLabel. setStyle("-fx-font-size: 16; -fx-font-weight: bold;");
+        nameLabel.setStyle("-fx-font-size: 16; -fx-font-weight: bold;");
         nameLabel.setWrapText(true);
         
         HBox batteryBox = createBatteryIndicator(appareil. niveauBatterie());
@@ -93,48 +269,32 @@ public class AppareilsView implements Initializable {
         
         card.getChildren().addAll(iconLabel, nameLabel, batteryBox, lastUsageLabel);
         
-        if (appareil instanceof Smartphone s) {
-            Label serialLabel = new Label("N° série: " + s.numeroSerie());
-            serialLabel.setStyle("-fx-font-size: 11; -fx-text-fill: #888;");
-            card. getChildren().add(serialLabel);
-        } else if (appareil instanceof Ordinateur o) {
-            Label ramLabel = new Label("RAM: " + o.ramGo() + " Go");
-            Label typeLabel = new Label("Type: " + o.type().nom());
-            ramLabel.setStyle("-fx-font-size: 11; -fx-text-fill: #888;");
-            typeLabel.setStyle("-fx-font-size: 11; -fx-text-fill: #888;");
-            card.getChildren(). addAll(ramLabel, typeLabel);
-        }
-        
         return card;
     }
     
-    private String getDeviceIcon(Appareil appareil) {
-        if (appareil instanceof Smartphone) return "📱";
-        if (appareil instanceof Tablette) return "📲";
-        if (appareil instanceof Ordinateur) return "💻";
+    // Vous devez ajouter ces méthodes si elles n'existent pas déjà
+private String getDeviceIcon(Appareil appareil) {
+    if (appareil instanceof Smartphone) {
         return "📱";
+    } else if (appareil instanceof Tablette) {
+        return "📱";
+    } else if (appareil instanceof Ordinateur) {
+        return "💻";
     }
+    return "📱";
+}
     
-    private HBox createBatteryIndicator(int batteryLevel) {
+    private HBox createBatteryIndicator(int niveau) {
         HBox box = new HBox(5);
-        box. setAlignment(Pos.CENTER_LEFT);
+        box.setAlignment(Pos. CENTER_LEFT);
         
-        String batteryIcon = batteryLevel > 75 ? "🔋" :
-                           batteryLevel > 25 ? "🔋" : "🪫";
+        ProgressBar progressBar = new ProgressBar(niveau / 100.0);
+        progressBar.setPrefWidth(150);
         
-        Label icon = new Label(batteryIcon);
-        icon.setStyle("-fx-font-size: 16;");
+        Label label = new Label(niveau + "%");
+        label.setStyle("-fx-font-size: 12;");
         
-        Label levelLabel = new Label(batteryLevel + "%");
-        levelLabel.setStyle("-fx-font-size: 14; -fx-font-weight: bold;");
-        
-        box. getChildren().addAll(icon, levelLabel);
+        box.getChildren().addAll(progressBar, label);
         return box;
-    }
-    
-
-    @FXML
-    private void rafraichir() {
-        loadAppareils();
     }
 }
