@@ -1,20 +1,19 @@
-
-package smarttimeapp2.model;
-
+package smarttimeapp2. model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time. LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
-
 
 public final class Historique {
     
     private final List<Session> sessions;
+    
     public Historique() {
         this.sessions = new ArrayList<>();
     }
-        public void ajouter(Session session) {    
+    
+    public void ajouter(Session session) {    
         boolean chevauchement = sessions.stream()
             .anyMatch(s -> chevauche(s, session));
         
@@ -28,17 +27,41 @@ public final class Historique {
         sessions.add(session);
     }
     
- 
-    private boolean chevauche(Session s1, Session s2) {
-        if (!s1.appareil().equals(s2.appareil())) {
-            return false;
-        }
-        return !(s1.fin().isBefore(s2.debut()) || s1.debut().isAfter(s2.fin()));
+    // ✅ NOUVELLE MÉTHODE : Supprimer une session
+    public boolean supprimer(Session session) {
+        return sessions.remove(session);
     }
     
-     // Retourne une vue non modifiable des sessions.
-     
-   public List<Session> sessions() {
+    // ✅ NOUVELLE MÉTHODE : Modifier une session (supprimer l'ancienne et ajouter la nouvelle)
+    public void modifier(Session ancienne, Session nouvelle) {
+        if (! sessions.contains(ancienne)) {
+            throw new IllegalArgumentException("La session à modifier n'existe pas dans l'historique");
+        }
+        
+        // Vérifier les chevauchements avec les autres sessions (sauf l'ancienne)
+        boolean chevauchement = sessions.stream()
+            .filter(s -> !s.equals(ancienne))
+            .anyMatch(s -> chevauche(s, nouvelle));
+        
+        if (chevauchement) {
+            throw new IllegalStateException(
+                "Chevauchement détecté pour l'appareil " + nouvelle.appareil().nom() +
+                " entre " + nouvelle.debut() + " et " + nouvelle.fin()
+            );
+        }
+        
+        sessions. remove(ancienne);
+        sessions.add(nouvelle);
+    }
+ 
+    private boolean chevauche(Session s1, Session s2) {
+        if (! s1.appareil().equals(s2.appareil())) {
+            return false;
+        }
+        return !(s1.fin().isBefore(s2. debut()) || s1.debut().isAfter(s2.fin()));
+    }
+    
+    public List<Session> sessions() {
         return Collections.unmodifiableList(sessions);
     }
     
@@ -59,6 +82,6 @@ public final class Historique {
     }
 
     public void effacer() {
-        sessions.clear();
+        sessions. clear();
     }
 }
