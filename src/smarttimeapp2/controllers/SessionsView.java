@@ -149,11 +149,15 @@ public class SessionsView implements Initializable {
     @FXML
  // ==================== MÉTHODE AJOUTER (CORRIGÉE) ====================
 private void handleAjouter() {
-    if (appareils == null || appareils.isEmpty()) {
-        showAlert(Alert.AlertType.WARNING, "Aucun appareil", 
-            "Vous devez d'abord ajouter des appareils avant de créer une session.");
-        return;
-    }
+    if (appareils == null) {
+    appareils = new java.util.HashMap<>();
+}
+
+if (appareils. isEmpty()) {
+    // Créer un appareil par défaut
+    Appareil appareilDefaut = Smartphone.creer("Mon Smartphone", "Appareil par défaut", Systeme. ANDROID);
+    appareils. put(appareilDefaut.nom(), appareilDefaut);
+}
     
     Dialog<Session> dialog = new Dialog<>();
     dialog.setTitle("Ajouter une session");
