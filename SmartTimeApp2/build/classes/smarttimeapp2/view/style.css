@@ -1,0 +1,33 @@
+
+.root {
+    -fx-primary-color: #4A90E2;
+    -fx-primary-dark: #2E5C8A;
+    -fx-secondary-color: #50C878;
+    -fx-danger-color: #FF6B6B;
+    -fx-warning-color: #FFA726;
+    
+    -fx-bg-color: #F5F7FA;
+    -fx-card-bg: #FFFFFF;
+    -fx-sidebar-bg: #2C3E50;
+    -fx-header-bg: linear-gradient(to right, #4A90E2, #357ABD);
+    
+    -fx-text-primary: #2C3E50;
+    -fx-text-secondary: #7F8C8D;
+    -fx-text-light: #FFFFFF;
+    
+    -fx-shadow-light: rgba(0, 0, 0, 0.1);
+    -fx-shadow-medium: rgba(0, 0, 0, 0.15);
+    -fx-shadow-strong: rgba(0, 0, 0, 0.25);
+    
+    -fx-font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.border-pane {
+    -fx-background-color: -fx-bg-color;
+}
+
+.header {
+    -fx-background-color: linear-gradient(to right, #4A90E2, #357ABD);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 3);
+    -fx-padding: 20;
+}

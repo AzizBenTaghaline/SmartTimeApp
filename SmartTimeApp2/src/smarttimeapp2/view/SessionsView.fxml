@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="20" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smarttimeapp2.controllers.SessionsView">
+    
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+    
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="⏱ Mes sessions" />
+        <Region HBox.hgrow="ALWAYS" />
+        
+        <!-- Boutons d'action -->
+        <Button fx:id="btnAjouter" onAction="#handleAjouter" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius: 5; -fx-cursor: hand;" text="Ajouter" />
+        <Button fx:id="btnModifier" onAction="#handleModifier" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius: 5; -fx-cursor: hand;" text="Modifier" />
+        <Button fx:id="btnSupprimer" onAction="#handleSupprimer" style="-fx-background-color: #f44336; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius: 5; -fx-cursor: hand;" text=" Supprimer" />
+    </HBox>
+    
+    <HBox alignment="CENTER" spacing="15">
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;" text="📊 Nombre de sessions" />
+            <Label fx:id="labelNbSessions" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="0" />
+        </VBox>
+        
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;" text="⏰ Temps total" />
+            <Label fx:id="labelTempsTotal" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #3498db;" text="0 min" />
+        </VBox>
+        
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;" text="📈 Durée moyenne" />
+            <Label fx:id="labelMoyenne" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #27ae60;" text="0 min" />
+        </VBox>
+    </HBox>
+    
+    <!-- Filtres et recherche -->
+    <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15;">
+        <Label style="-fx-font-size: 14; -fx-font-weight: bold;" text="🔍 Filtrer:" />
+        <ComboBox fx:id="comboPeriode" prefWidth="150" />
+        <TextField fx:id="txtRecherche" prefWidth="300" promptText="Rechercher..." />
+    </HBox>
+    
+    <!-- TableView -->
+    <TableView fx:id="tableSessions" style="-fx-background-color: white; -fx-background-radius: 10;" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colDate" prefWidth="100" text="Date" />
+            <TableColumn fx:id="colDebut" prefWidth="80" text="Début" />
+            <TableColumn fx:id="colFin" prefWidth="80" text="Fin" />
+            <TableColumn fx:id="colApplication" prefWidth="150" text="Application" />
+            <TableColumn fx:id="colAppareil" prefWidth="200" text="Appareil" />
+            <TableColumn fx:id="colDuree" prefWidth="100" text="Durée" />
+        </columns>
+    </TableView>
+    
+</VBox>

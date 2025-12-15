@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="20" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="smarttimeapp2.controllers.ObjectifsView">
+    
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+    
+    <HBox alignment="CENTER_LEFT" spacing="15">
+        <Label style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="🎯 Mes objectifs" />
+        <Region HBox.hgrow="ALWAYS" />
+    </HBox>
+    
+    <HBox alignment="CENTER" spacing="15">
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;" text="📋 Objectifs actifs" />
+            <Label fx:id="labelObjectifsActifs" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="0" />
+        </VBox>
+        
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;" text="✅ Respectés" />
+            <Label fx:id="labelObjectifsRespetes" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #27ae60;" text="0" />
+        </VBox>
+        
+        <VBox spacing="5" style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" HBox.hgrow="ALWAYS">
+            <Label style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;" text="🚫 Dépassés" />
+            <Label fx:id="labelObjectifsDepasses" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #e74c3c;" text="0" />
+        </VBox>
+    </HBox>
+    
+    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10 0;">
+        <Label style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #34495e;" text="Stratégies de gestion du temps" />
+        <Separator HBox.hgrow="ALWAYS" />
+    </HBox>
+    
+    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+        <content>
+            <FlowPane fx:id="cardsContainer" hgap="20" style="-fx-padding: 10;" vgap="20">
+            </FlowPane>
+        </content>
+    </ScrollPane>
+    
+</VBox>
